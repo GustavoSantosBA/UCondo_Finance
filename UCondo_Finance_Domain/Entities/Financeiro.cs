@@ -16,5 +16,6 @@ namespace UCondo_Finance_Domain.Entities
         public string Descricao { get; set; }
         public PeriodicidadeEnum Periodicidade { get; set; }
         public StatusEnum StsLancamento { get; set; }
+        public TipoLancamentoEnum TipoLancamento { get; set; }
     }
 }

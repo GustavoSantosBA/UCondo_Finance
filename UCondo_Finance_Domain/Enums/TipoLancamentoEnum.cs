@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace UCondo_Finance_Domain.Enums
 {
-    public enum TipoPessoaEnum
+    public enum TipoLancamentoEnum
     {
-        Cliente,
-        Fornecedor,
-        Ambos
+        Entrada,
+        Saida
     }
 }

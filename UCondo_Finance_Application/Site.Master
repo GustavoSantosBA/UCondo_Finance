@@ -59,7 +59,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - Meu aplicativo ASP.NET</p>
+                <p>&copy; <%: DateTime.Now.Year %> - uCondo - Sistema e aplicativo para gestão de condomínios que entrega economia e comodidade</p>
             </footer>
         </div>
     </form>
