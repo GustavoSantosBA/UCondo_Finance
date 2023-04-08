@@ -15,7 +15,7 @@ namespace UCondo_Finance_Data.Repository
     {
         public void DeleteItemById(int id)
         {
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {
@@ -24,8 +24,7 @@ namespace UCondo_Finance_Data.Repository
                         $@"UPDATE Financeiro Set 
                                   Deleted = 1,  
                                   DeletedDate = GetDate()
-                           Where Id = {id}
-                         ",
+                           Where Id = {id}",
                         connection);
                     command.ExecuteNonQuery();
                     connection.Dispose();
@@ -40,7 +39,7 @@ namespace UCondo_Finance_Data.Repository
         public T InsertItem<T>(T Entity) where T : class
         {
             var objInsert = Entity as Financeiro;
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {
@@ -77,7 +76,7 @@ namespace UCondo_Finance_Data.Repository
         public IEnumerable<T> ListItem<T>() where T : class
         {
             var financeiroList = new List<Financeiro>();
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {
@@ -135,7 +134,7 @@ namespace UCondo_Finance_Data.Repository
         public T ListItemById<T>(int id) where T : class
         {
             var financeiro = new Financeiro();
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {
@@ -153,7 +152,7 @@ namespace UCondo_Finance_Data.Repository
                             B.NomePessoa,
                             B.TipoPessoa
                           From Financeiro A INNER JOIN PESSOA B on A.PessoaId = B.Id
-                          Where A.Deleted = 0",
+                          Where A.Deleted = 0 And Id = {id}",
                         connection);
 
                     SqlDataReader reader = command.ExecuteReader();
@@ -190,7 +189,7 @@ namespace UCondo_Finance_Data.Repository
         public void UpdateItem<T>(T Entity) where T : class
         {
             var objUpdate = Entity as Financeiro;
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {

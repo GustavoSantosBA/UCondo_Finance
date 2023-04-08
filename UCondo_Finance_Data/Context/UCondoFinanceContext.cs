@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UCondo_Finance_Data.Context
 {
-    public class UCondo_Finance_Context
+    public class UCondoFinanceContext
     {
         public SqlConnection GetConnection()
         {

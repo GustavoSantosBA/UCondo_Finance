@@ -4,18 +4,17 @@
 
 <html lang="pt">
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - Meu aplicativo ASP.NET</title>
-
+    <title><%: Page.Title %> - uCondo - IntraNET</title>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
-
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+    <link href="../Content/Menu.css" rel="stylesheet" />
+    <script src="../Scripts/LocalStore.js"></script>
 </head>
 <body>
     <form runat="server">
@@ -37,28 +36,22 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
-
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" runat="server" href="~/">Nome do aplicativo</a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar a navegação" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">Página Inicial</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">Sobre</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contato</a></li>
-                    </ul>
-                </div>
-            </div>
+        <div class="col-lg-2 logo">
+            <img src="../Content/Img/logo.png" width="85%" />
+        </div>
+        <nav>
+            <ul class="menu-items">
+                <li><a href="Default.aspx">Home</a></li>
+                <li><a href="Financeiro.aspx">Financeiro</a></li>
+                <li><a href="Usuarios.aspx">Usuários</a></li>
+                <li><a href="Sobre.aspx">Sobre</a></li>
+            </ul>
         </nav>
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <hr />
             <footer>
+                <hr />
                 <p>&copy; <%: DateTime.Now.Year %> - uCondo - Sistema e aplicativo para gestão de condomínios que entrega economia e comodidade</p>
             </footer>
         </div>

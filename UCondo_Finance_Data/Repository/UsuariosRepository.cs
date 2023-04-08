@@ -14,7 +14,7 @@ namespace UCondo_Finance_Data.Repository
     {
         public void DeleteItemById(int id)
         {
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {
@@ -39,18 +39,19 @@ namespace UCondo_Finance_Data.Repository
         public T InsertItem<T>(T Entity) where T : class
         {
             var objInsert = Entity as Usuarios;
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {
                     connection.Open();
                     SqlCommand command = new SqlCommand(
-                        $@"INSERT INTO Usuarios (NomeUsuario, EmailUsuario, SenhaUsuario,RefCode) 
+                        $@"INSERT INTO Usuarios (NomeUsuario, EmailUsuario, SenhaUsuario, Deleted, RefCode) 
                        OUTPUT INSERTED.Id
                        VALUES (
                                 '{objInsert.NomeUsuario}', 
                                 '{objInsert.EmailUsuario}', 
                                 '{objInsert.SenhaUsuario}',
+                                0,
                                 '{Guid.NewGuid()}'
                               )",
                         connection);
@@ -71,7 +72,7 @@ namespace UCondo_Finance_Data.Repository
         public IEnumerable<T> ListItem<T>() where T : class
         {
             var usuariosList = new List<Usuarios>();
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {
@@ -115,7 +116,7 @@ namespace UCondo_Finance_Data.Repository
         public T ListItemById<T>(int id) where T : class
         {
             var usuario = new Usuarios();
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {
@@ -156,7 +157,7 @@ namespace UCondo_Finance_Data.Repository
         public void UpdateItem<T>(T Entity) where T : class
         {
             var objUpdate = Entity as Usuarios;
-            using (SqlConnection connection = new UCondo_Finance_Context().GetConnection())
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
                 {
