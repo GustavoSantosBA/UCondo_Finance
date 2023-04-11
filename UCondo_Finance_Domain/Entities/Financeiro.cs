@@ -9,8 +9,6 @@ namespace UCondo_Finance_Domain.Entities
 {
     public class Financeiro : BaseEntity
     {
-        public int PessoaId { get; set; }
-        public Pessoa Pessoa { get; set; }
         public DateTime DataVencimento { get; set; }
         public decimal ValorLancamento { get; set; }
         public string Descricao { get; set; }

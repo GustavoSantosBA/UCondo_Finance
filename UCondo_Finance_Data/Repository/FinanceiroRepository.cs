@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrossCutting_Extensions;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -45,16 +46,15 @@ namespace UCondo_Finance_Data.Repository
                 {
                     connection.Open();
                     SqlCommand command = new SqlCommand(
-                        $@"INSERT INTO Financeiro (PessoaId, DataVencimento, ValorLancamento,Descricao,Periodicidade,StsLancamento,TipoLancamento,Deleted,RefCode) 
+                        $@"INSERT INTO Financeiro (DataVencimento, ValorLancamento,Descricao,Periodicidade,StsLancamento,TipoLancamento,Deleted,RefCode) 
                        OUTPUT INSERTED.Id
                        VALUES (
-                                '{objInsert.PessoaId}', 
                                 '{objInsert.DataVencimento.ToString("yyyy-MM-dd")}', 
                                  {objInsert.ValorLancamento}, 
                                 '{objInsert.Descricao}',        
-                                '{objInsert.Periodicidade}', 
-                                '{objInsert.StsLancamento}', 
-                                '{objInsert.TipoLancamento}',
+                                {objInsert.Periodicidade.EnumToInt()}, 
+                                {objInsert.StsLancamento.EnumToInt()}, 
+                                {objInsert.TipoLancamento.EnumToInt()},
                                 '0',
                                 '{Guid.NewGuid()}'
                               )",
@@ -83,18 +83,14 @@ namespace UCondo_Finance_Data.Repository
                     connection.Open();
                     SqlCommand command = new SqlCommand(
                         $@"Select 
-                            A.Id,
-                            A.PessoaId,
-                            A.DataVencimento,
-                            A.ValorLancamento,
-                            A.Descricao,
-                            A.Periodicidade,
-                            A.StsLancamento,
-                            A.TipoLancamento,
-                            B.NomePessoa,
-                            B.TipoPessoa
-                          From Financeiro A INNER JOIN PESSOA B on A.PessoaId = B.Id
-                          Where A.Deleted = 0",
+                            Id,
+                            DataVencimento,
+                            ValorLancamento,
+                            Descricao,
+                            Periodicidade,
+                            StsLancamento,
+                            TipoLancamento,
+                          From Financeiro Where A.Deleted = 0",
                         connection);
 
                     SqlDataReader reader = command.ExecuteReader();
@@ -104,18 +100,12 @@ namespace UCondo_Finance_Data.Repository
                         financeiroList.Add(new Financeiro
                         {
                             Id = (int)reader["Id"],
-                            PessoaId = (int)reader["PessoaId"],
                             DataVencimento = (DateTime)reader["DataVencimento"],
                             ValorLancamento = (decimal)reader["ValorLancamento"],
                             Descricao = (string)reader["Descricao"],
                             Periodicidade = (PeriodicidadeEnum)reader["Periodicidade"],
                             StsLancamento = (StatusEnum)reader["StsLancamento"],
                             TipoLancamento = (TipoLancamentoEnum)reader["TipoLancamento"],
-                            Pessoa = new Pessoa()
-                            {
-                                Id = (int)reader["PessoaId"],
-                                NomePessoa = (string)reader["NomePessoa"]
-                            }
                         });
                     }
                     reader.Close();
@@ -141,18 +131,15 @@ namespace UCondo_Finance_Data.Repository
                     connection.Open();
                     SqlCommand command = new SqlCommand(
                         $@"Select 
-                            A.Id,
-                            A.PessoaId,
-                            A.DataVencimento,
-                            A.ValorLancamento,
-                            A.Descricao,
-                            A.Periodicidade,
-                            A.StsLancamento,
-                            A.TipoLancamento,
-                            B.NomePessoa,
-                            B.TipoPessoa
-                          From Financeiro A INNER JOIN PESSOA B on A.PessoaId = B.Id
-                          Where A.Deleted = 0 And Id = {id}",
+                            Id,
+                            PessoaId,
+                            DataVencimento,
+                            ValorLancamento,
+                            Descricao,
+                            Periodicidade,
+                            StsLancamento,
+                            TipoLancamento,
+                          From Financeiro Where Deleted = 0 And Id = {id}",
                         connection);
 
                     SqlDataReader reader = command.ExecuteReader();
@@ -160,7 +147,6 @@ namespace UCondo_Finance_Data.Repository
                     while (reader.Read())
                     {
                         financeiro.Id = (int)reader["Id"];
-                        financeiro.PessoaId = (int)reader["PessoaId"];
                         financeiro.DataVencimento = (DateTime)reader["DataVencimento"];
                         financeiro.ValorLancamento = (decimal)reader["ValorLancamento"];
                         financeiro.Descricao = (string)reader["Descricao"];
@@ -168,11 +154,6 @@ namespace UCondo_Finance_Data.Repository
                         financeiro.StsLancamento = (StatusEnum)reader["StsLancamento"];
                         financeiro.TipoLancamento = (TipoLancamentoEnum)reader["TipoLancamento"];
                         financeiro.RefCode = (string)reader["RefCode"];
-                        financeiro.Pessoa = new Pessoa()
-                        {
-                            Id = (int)reader["PessoaId"],
-                            NomePessoa = (string)reader["NomePessoa"]
-                        };
                     }
                     reader.Close();
                     connection.Dispose();
@@ -196,14 +177,12 @@ namespace UCondo_Finance_Data.Repository
                     connection.Open();
                     SqlCommand command = new SqlCommand(
                         $@"UPDATE Usuarios Set 
-                                  PessoaId  = '{objUpdate.PessoaId}', 
                                   DataVencimento = '{objUpdate.DataVencimento.ToString("yyyy-MM-dd")}', 
                                   ValorLancamento = '{objUpdate.ValorLancamento}',
                                   Descricao = '{objUpdate.Descricao}',
-                                  Periodicidade = '{objUpdate.Periodicidade}',
-                                  StsLancamento = '{objUpdate.StsLancamento}',
-                                  Periodicidade = '{objUpdate.Periodicidade}',
-                                  TipoLancamento = '{objUpdate.TipoLancamento}'
+                                  Periodicidade = {objUpdate.Periodicidade.EnumToInt()},
+                                  StsLancamento = {objUpdate.StsLancamento.EnumToInt()},
+                                  TipoLancamento = {objUpdate.TipoLancamento.EnumToInt()}
                            Where Id = {objUpdate.Id}
                          ",
                         connection);

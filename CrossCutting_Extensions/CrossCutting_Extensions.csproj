@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{12D9BFCC-E93E-4740-8132-95E73D8D1C47}</ProjectGuid>
+    <ProjectGuid>{74EBA772-7818-4A70-AE58-53F349B3649F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UCondo_Finance_Domain</RootNamespace>
-    <AssemblyName>UCondo_Finance_Domain</AssemblyName>
+    <RootNamespace>CrossCutting_Extensions</RootNamespace>
+    <AssemblyName>CrossCutting_Extensions</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,13 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\BaseEntity.cs" />
-    <Compile Include="Entities\Financeiro.cs" />
-    <Compile Include="Entities\Usuarios.cs" />
-    <Compile Include="Enums\PeriodicidadeEnum.cs" />
-    <Compile Include="Enums\StatusEnum.cs" />
-    <Compile Include="Enums\TipoLancamentoEnum.cs" />
-    <Compile Include="Enums\TipoPessoaEnum.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

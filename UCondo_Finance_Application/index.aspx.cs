@@ -11,7 +11,7 @@ namespace UCondo_Finance_Application
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("/views/default.aspx");
+            Response.Redirect("/views/login");
         }
     }
 }

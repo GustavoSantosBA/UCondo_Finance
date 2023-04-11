@@ -11,7 +11,7 @@ namespace UCondo_Finance_Data.Context
     {
         public SqlConnection GetConnection()
         {
-            string _connectionString = $@"Server=.\SQLExpress;Database=UcondoFinance;Trusted_Connection=True;";
+            string _connectionString = $@"Server=.;Database=UcondoFinance;Trusted_Connection=True;";
             return new SqlConnection(_connectionString);
         }
     }

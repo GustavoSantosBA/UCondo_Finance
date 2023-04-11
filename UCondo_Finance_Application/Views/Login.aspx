@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link href="../Content/login.css" rel="stylesheet" />
+    <link href="../Content/Site.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -15,15 +16,15 @@
                 <h2>Login</h2>
                 <form>
                     <div class="user-box">
-                        <input type="text" name="" required="">
+                        <asp:TextBox ID="fldUsuario" runat="server"></asp:TextBox>
                         <label>Usuário</label>
                     </div>
                     <div class="user-box">
-                        <input type="password" name="" required="">
+                        <asp:TextBox ID="fldPassword" runat="server" TextMode="Password"></asp:TextBox>
                         <label>Senha</label>
                     </div>
-                    <div style="text-align : center">
-                        <asp:Button Text="Entrar" runat="server" CssClass="buttonLogin" />
+                    <div style="text-align: center">
+                        <asp:Button Text="Entrar" runat="server" CssClass="buttonLogin" ID="btnLogin" OnClick="btnLogin_Click" />
                     </div>
                 </form>
             </div>

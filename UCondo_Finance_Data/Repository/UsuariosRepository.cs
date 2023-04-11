@@ -153,6 +153,48 @@ namespace UCondo_Finance_Data.Repository
                 }
             }
         }
+        public Usuarios DoLogin(string email, string senha)
+        {
+            var usuario = new Usuarios();
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(
+                        $@"Select 
+                            Id,
+                            NomeUsuario, 
+                            EmailUsuario, 
+                            SenhaUsuario,
+                            RefCode 
+                          From Usuarios
+                          Where Deleted = 0 
+                            and EmailUsuario = '{email}'
+                            and SenhaUsuario = '{senha}'",
+                        connection);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        usuario.Id = (int)reader["Id"];
+                        usuario.NomeUsuario = (string)reader["NomeUsuario"];
+                        usuario.EmailUsuario = (string)reader["EmailUsuario"];
+                        usuario.SenhaUsuario = (string)reader["SenhaUsuario"];
+                        usuario.RefCode = (string)reader["RefCode"];
+                    }
+                    reader.Close();
+                    connection.Dispose();
+                    return usuario;
+                }
+                catch (Exception)
+                {
+                    connection.Dispose();
+                    return null;
+                }
+            }
+        }
 
         public void UpdateItem<T>(T Entity) where T : class
         {
