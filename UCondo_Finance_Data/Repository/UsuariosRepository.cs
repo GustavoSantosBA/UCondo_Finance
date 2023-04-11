@@ -208,7 +208,7 @@ namespace UCondo_Finance_Data.Repository
                         $@"UPDATE Usuarios Set 
                                   NomeUsuario  = '{objUpdate.NomeUsuario}', 
                                   EmailUsuario = '{objUpdate.EmailUsuario}', 
-                                  SenhaUsuario = '{objUpdate.SenhaUsuario}',
+                                  SenhaUsuario = '{objUpdate.SenhaUsuario}'
                            Where Id = {objUpdate.Id}
                          ",
                         connection);

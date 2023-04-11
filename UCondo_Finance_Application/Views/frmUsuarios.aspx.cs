@@ -15,7 +15,17 @@ namespace UCondo_Finance_Application.Views
         private readonly UsuariosRepository _repository = new UsuariosRepository();
         protected void Page_Load(object sender, EventArgs e)
         {
-             
+            if (!IsPostBack) { ComporGrid(); }
+        }
+
+        private void ComporGrid()
+        {
+            var listObj = _repository.ListItem<Usuarios>();
+            if (listObj != null)
+            {
+                gvUsuarios.DataSource = listObj;
+                gvUsuarios.DataBind();
+            }
         }
 
         protected void btnGravar_Click(object sender, EventArgs e)
@@ -27,9 +37,13 @@ namespace UCondo_Finance_Application.Views
                 NomeUsuario = fldNomeUsuario.Text,
                 EmailUsuario = fldEmailUsuario.Text
             };
+
             //
             if (obj.Id > 0) { _repository.UpdateItem(obj); }
             else { _repository.InsertItem(obj); }
+
+            //
+            Response.Redirect("/views/frmUsuarios");
         }
 
         protected void btnNovo_Click(object sender, EventArgs e)
@@ -39,7 +53,36 @@ namespace UCondo_Finance_Application.Views
 
         protected void btnExcluir_Click(object sender, EventArgs e)
         {
-            if (fldCodigo.Text.ToInt() > 0) { _repository.DeleteItemById(fldCodigo.Text.ToInt()); }
+            if (fldCodigo.Text.ToInt() > 0)
+            {
+                _repository.DeleteItemById(fldCodigo.Text.ToInt());
+                Response.Redirect("/views/frmUsuarios");
+            }
+        }
+
+        protected void btnPesq_Click(object sender, EventArgs e)
+        {
+            mpePopup.Show();
+        }
+
+        protected void gvUsuarios_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var grid = ((GridView)sender);
+            int index = grid.SelectedRow.RowIndex;
+            if (index >= 0)
+            {
+                if (int.TryParse(grid.Rows[index].Cells[1].Text, out var id))
+                {
+                    var obj = _repository.ListItemById<Usuarios>(id);
+                    if (obj != null)
+                    {
+                        fldCodigo.Text = obj.Id.ToString();
+                        fldNomeUsuario.Text = obj.NomeUsuario;
+                        fldEmailUsuario.Text = obj.EmailUsuario;
+                        fldSenhaUsuario.Text = obj.SenhaUsuario;
+                    }
+                }
+            }
         }
     }
 }

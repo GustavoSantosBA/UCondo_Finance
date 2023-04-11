@@ -103,9 +103,9 @@ namespace UCondo_Finance_Data.Repository
                             DataVencimento = (DateTime)reader["DataVencimento"],
                             ValorLancamento = (decimal)reader["ValorLancamento"],
                             Descricao = (string)reader["Descricao"],
-                            Periodicidade = (PeriodicidadeEnum)reader["Periodicidade"],
-                            StsLancamento = (StatusEnum)reader["StsLancamento"],
-                            TipoLancamento = (TipoLancamentoEnum)reader["TipoLancamento"],
+                            Periodicidade = Extensions.ParseEnum<PeriodicidadeEnum>((int)reader["Periodicidade"]),
+                            StsLancamento = Extensions.ParseEnum<StatusEnum>((int)reader["StsLancamento"]),
+                            TipoLancamento = Extensions.ParseEnum<TipoLancamentoEnum>((int)reader["TipoLancamento"])
                         });
                     }
                     reader.Close();
@@ -132,13 +132,13 @@ namespace UCondo_Finance_Data.Repository
                     SqlCommand command = new SqlCommand(
                         $@"Select 
                             Id,
-                            PessoaId,
                             DataVencimento,
                             ValorLancamento,
                             Descricao,
                             Periodicidade,
                             StsLancamento,
                             TipoLancamento,
+                            RefCode
                           From Financeiro Where Deleted = 0 And Id = {id}",
                         connection);
 
@@ -150,9 +150,9 @@ namespace UCondo_Finance_Data.Repository
                         financeiro.DataVencimento = (DateTime)reader["DataVencimento"];
                         financeiro.ValorLancamento = (decimal)reader["ValorLancamento"];
                         financeiro.Descricao = (string)reader["Descricao"];
-                        financeiro.Periodicidade = (PeriodicidadeEnum)reader["Periodicidade"];
-                        financeiro.StsLancamento = (StatusEnum)reader["StsLancamento"];
-                        financeiro.TipoLancamento = (TipoLancamentoEnum)reader["TipoLancamento"];
+                        financeiro.Periodicidade = Extensions.ParseEnum<PeriodicidadeEnum>((int)reader["Periodicidade"]);
+                        financeiro.StsLancamento = Extensions.ParseEnum<StatusEnum>((int)reader["StsLancamento"]);
+                        financeiro.TipoLancamento = Extensions.ParseEnum<TipoLancamentoEnum>((int)reader["TipoLancamento"]);
                         financeiro.RefCode = (string)reader["RefCode"];
                     }
                     reader.Close();
@@ -176,9 +176,9 @@ namespace UCondo_Finance_Data.Repository
                 {
                     connection.Open();
                     SqlCommand command = new SqlCommand(
-                        $@"UPDATE Usuarios Set 
+                        $@"UPDATE Financeiro Set 
                                   DataVencimento = '{objUpdate.DataVencimento.ToString("yyyy-MM-dd")}', 
-                                  ValorLancamento = '{objUpdate.ValorLancamento}',
+                                  ValorLancamento = {objUpdate.ValorLancamento},
                                   Descricao = '{objUpdate.Descricao}',
                                   Periodicidade = {objUpdate.Periodicidade.EnumToInt()},
                                   StsLancamento = {objUpdate.StsLancamento.EnumToInt()},

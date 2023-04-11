@@ -45,5 +45,20 @@ namespace UCondo_Finance_Application.Views
         {
             if (fldCodigo.Text.ToInt() > 0) { _repository.DeleteItemById(fldCodigo.Text.ToInt()); }
         }
+
+        protected void btnPesq_Click(object sender, EventArgs e)
+        {
+            var obj = _repository.ListItemById<Financeiro>(fldCodigo.Text.ToInt());
+            if (obj != null)
+            {
+                fldDataVencimento.TextMode = TextBoxMode.SingleLine;
+                fldDescricao.Text = obj.Descricao;
+                fldDataVencimento.Text = obj.DataVencimento.ToString("dd/MM/yyyy");
+                fldValorLancamento.Text = obj.ValorLancamento.ToString();
+                ddlStatus.Text = obj.StsLancamento.EnumToInt().ToString();
+                ddlTipoLanc.Text = obj.TipoLancamento.EnumToInt().ToString();
+                ddlPeriodicidade.Text = obj.Periodicidade.EnumToInt().ToString();
+            }
+        }
     }
 }

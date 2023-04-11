@@ -5,6 +5,9 @@
         <div class="col-lg-2">
             <asp:Label runat="server" Text="Código" CssClass="form-label"></asp:Label>
             <asp:TextBox ID="fldCodigo" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>        
+        <div class="col-lg-1" style="padding-top:12px; margin-left: -20px">
+            <asp:Button ID="btnPesq" runat="server" Text="..." OnClick="btnPesq_Click" CssClass="buttonLogin"/>
         </div>
     </div>
     <div class="row">
