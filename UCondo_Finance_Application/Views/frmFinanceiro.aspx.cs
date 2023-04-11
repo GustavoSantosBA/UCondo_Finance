@@ -32,7 +32,9 @@ namespace UCondo_Finance_Application.Views
                 Descricao = fldDescricao.Text.ToString(),
                 DataVencimento = fldDataVencimento.Text.ToDate(),
                 ValorLancamento = fldValorLancamento.Text.ToDecimal(),
-                StsLancamento = StatusEnum.Quitado
+                StsLancamento = ddlStatus.Text.ParseEnum<StatusEnum>(),
+                TipoLancamento = ddlTipoLanc.Text.ParseEnum<TipoLancamentoEnum>(),
+                Periodicidade = ddlPeriodicidade.Text.ParseEnum<PeriodicidadeEnum>()
             };
             //
             if (obj.Id > 0) { _repository.UpdateItem(obj); }

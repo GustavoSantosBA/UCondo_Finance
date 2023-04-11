@@ -17,11 +17,32 @@
             <asp:TextBox ID="fldDescricao" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="5"></asp:TextBox>
         </div>
         <div class="col-lg-3">
+            <asp:Label runat="server" Text="Periodicidade" CssClass="form-label"></asp:Label>
+            <asp:DropDownList ID="ddlPeriodicidade" runat="server" CssClass="form-control">
+                <asp:ListItem Text="Único" Value="0" />
+                <asp:ListItem Text="Mensal" Value="1" />
+            </asp:DropDownList>
+        </div>
+        <div class="col-lg-3">
+            <asp:Label runat="server" Text="Tipo Lançamento" CssClass="form-label"></asp:Label>
+            <asp:DropDownList ID="ddlTipoLanc" runat="server" CssClass="form-control">
+                <asp:ListItem Text="Entrada" Value="0" />
+                <asp:ListItem Text="Saída" Value="1" />
+            </asp:DropDownList>
+        </div>
+        <div class="col-lg-3">
+            <asp:Label runat="server" Text="Status" CssClass="form-label"></asp:Label>
+            <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-control">
+                <asp:ListItem Text="Aberto" Value="0" />
+                <asp:ListItem Text="Quitado" Value="1" />
+            </asp:DropDownList>
+        </div>
+        <div class="col-lg-3">
             <asp:Label runat="server" Text="Valor" CssClass="form-label"></asp:Label>
             <asp:TextBox ID="fldValorLancamento" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
         </div>
     </div>
-    <div style="text-align: center">
+    <div style="text-align: center; padding-top: 50px">
         <asp:Button Text="Novo" runat="server" CssClass="buttonLogin" ID="btnNovo" OnClick="btnNovo_Click" />
         <asp:Button Text="Gravar" runat="server" CssClass="buttonLogin" ID="btnGravar" OnClick="btnGravar_Click" />
         <asp:Button Text="Excluir" runat="server" CssClass="buttonLogin" ID="btnExcluir" OnClick="btnExcluir_Click" />
