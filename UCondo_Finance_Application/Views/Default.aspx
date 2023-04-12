@@ -46,5 +46,6 @@
             <SortedDescendingCellStyle BackColor="#E9EBEF" />
             <SortedDescendingHeaderStyle BackColor="#4870BE" />
         </asp:GridView>
+        <h4 class="lblTotal"  runat="server" id="lbltotal"></h4>
     </div>
 </asp:Content>

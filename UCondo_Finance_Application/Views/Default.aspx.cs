@@ -15,29 +15,28 @@ namespace UCondo_Finance_Application
         private readonly FinanceiroRepository _repository = new FinanceiroRepository();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) { ComporGrid(); }
-        }
-
-        private void ComporGrid()
-        {
-            var listObj = _repository.ListItem<Financeiro>();
-            if (listObj != null)
+            if (!IsPostBack)
             {
-                gvFinanceiro.DataSource = listObj;
-                gvFinanceiro.DataBind();
+                var listObj = _repository.ListItem<Financeiro>();
+                ComporGrid(listObj);
             }
         }
 
         protected void btnPesquisar_Click(object sender, EventArgs e)
         {
             var listObj = _repository.ListItemByPeriodo<Financeiro>(fldPeriodoInicial.Text.ToDate(), fldPeriodoFinal.Text.ToDate());
+            ComporGrid(listObj);
+        }
+
+        private void ComporGrid(IEnumerable<Financeiro> listObj)
+        {
             if (listObj != null)
             {
                 gvFinanceiro.DataSource = listObj;
                 gvFinanceiro.DataBind();
+                lbltotal.InnerText = $@"Total: {listObj.Sum(x => x.ValorLancamento).ToString("###,##0.00")}";
             }
         }
-
         protected void btnLimparFiltro_Click(object sender, EventArgs e)
         {
             Response.Redirect("/views/default");
