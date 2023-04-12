@@ -14,6 +14,17 @@ namespace UCondo_Finance_Data.Repository
 {
     public class FinanceiroRepository : IBaseRepository
     {
+        private decimal GetVlrLancamento(TipoLancamentoEnum tipoLancamento, decimal vlrLancamento)
+        {
+            if ((tipoLancamento == TipoLancamentoEnum.Saida && vlrLancamento > 0) || (tipoLancamento == TipoLancamentoEnum.Entrada && vlrLancamento < 0))
+            {
+                return (vlrLancamento * -1);
+            }
+            else
+            {
+                return vlrLancamento;
+            }
+        }
         public void DeleteItemById(int id)
         {
             using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
@@ -40,6 +51,7 @@ namespace UCondo_Finance_Data.Repository
         public T InsertItem<T>(T Entity) where T : class
         {
             var objInsert = Entity as Financeiro;
+            //
             using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
             {
                 try
@@ -50,7 +62,7 @@ namespace UCondo_Finance_Data.Repository
                        OUTPUT INSERTED.Id
                        VALUES (
                                 '{objInsert.DataVencimento.ToString("yyyy-MM-dd")}', 
-                                 {objInsert.ValorLancamento}, 
+                                 {GetVlrLancamento(objInsert.TipoLancamento, objInsert.ValorLancamento)}, 
                                 '{objInsert.Descricao}',        
                                 {objInsert.Periodicidade.EnumToInt()}, 
                                 {objInsert.StsLancamento.EnumToInt()}, 
@@ -89,8 +101,59 @@ namespace UCondo_Finance_Data.Repository
                             Descricao,
                             Periodicidade,
                             StsLancamento,
-                            TipoLancamento,
-                          From Financeiro Where A.Deleted = 0",
+                            TipoLancamento
+                          From Financeiro Where Deleted = 0",
+                        connection);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        financeiroList.Add(new Financeiro
+                        {
+                            Id = (int)reader["Id"],
+                            DataVencimento = (DateTime)reader["DataVencimento"],
+                            ValorLancamento = (decimal)reader["ValorLancamento"],
+                            Descricao = (string)reader["Descricao"],
+                            Periodicidade = Extensions.ParseEnum<PeriodicidadeEnum>((int)reader["Periodicidade"]),
+                            StsLancamento = Extensions.ParseEnum<StatusEnum>((int)reader["StsLancamento"]),
+                            TipoLancamento = Extensions.ParseEnum<TipoLancamentoEnum>((int)reader["TipoLancamento"])
+                        });
+                    }
+                    reader.Close();
+                    connection.Dispose();
+
+                    return financeiroList as IEnumerable<T>;
+                }
+                catch (Exception)
+                {
+                    connection.Dispose();
+                    return null;
+                }
+            }
+        }public IEnumerable<T> ListItemByPeriodo<T>(DateTime fromDate, DateTime toDate) where T : class
+        {
+            var financeiroList = new List<Financeiro>();
+            var where = new List<string>();
+            if (fromDate != DateTime.MinValue) { where.Add($"DataVencimento >= '{fromDate.ToString("yyyy-MM-dd")}'"); }
+            if (toDate != DateTime.MinValue) { where.Add($"DataVencimento <= '{toDate.ToString("yyyy-MM-dd")}'"); }
+            string whereQryStr = (where.Count() > 0) ? " and " + String.Join(" and ", where.ToArray()) : "";
+            using (SqlConnection connection = new UCondoFinanceContext().GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(
+                        $@"Select 
+                            Id,
+                            DataVencimento,
+                            ValorLancamento,
+                            Descricao,
+                            Periodicidade,
+                            StsLancamento,
+                            TipoLancamento
+                          From Financeiro Where Deleted = 0
+                          {whereQryStr}",
                         connection);
 
                     SqlDataReader reader = command.ExecuteReader();
@@ -178,7 +241,7 @@ namespace UCondo_Finance_Data.Repository
                     SqlCommand command = new SqlCommand(
                         $@"UPDATE Financeiro Set 
                                   DataVencimento = '{objUpdate.DataVencimento.ToString("yyyy-MM-dd")}', 
-                                  ValorLancamento = {objUpdate.ValorLancamento},
+                                  ValorLancamento = {GetVlrLancamento(objUpdate.TipoLancamento, objUpdate.ValorLancamento)},
                                   Descricao = '{objUpdate.Descricao}',
                                   Periodicidade = {objUpdate.Periodicidade.EnumToInt()},
                                   StsLancamento = {objUpdate.StsLancamento.EnumToInt()},
