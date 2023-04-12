@@ -20,9 +20,15 @@
     <form runat="server">
         <asp:ScriptManager runat="server">
         </asp:ScriptManager>
-        <div class="col-lg-2 logo">
-            <img src="../Content/Img/logo.png" width="85%" />
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="col-lg-2 logo align-self-start">
+                <img src="../Content/Img/logo.png" width="85%" />
+            </div>
+            <div class="align-self-end p-3">
+                <asp:Label Text="text" runat="server" ID="lblUsuario" />
+            </div>
         </div>
+
         <nav>
             <ul class="menu-items">
                 <li><a href="Default">Home</a></li>
@@ -38,6 +44,7 @@
             <footer>
                 <hr />
                 <p>&copy; <%: DateTime.Now.Year %> - uCondo - Sistema e aplicativo para gestão de condomínios que entrega economia e comodidade</p>
+                <asp:Button Text="Sair ?" runat="server" CssClass="buttonLogin" ID="btnLogOut" OnClick="btnLogOut_Click" />
             </footer>
         </div>
     </form>
